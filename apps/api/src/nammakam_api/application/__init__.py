@@ -9,11 +9,23 @@ from nammakam_api.application.dto.episode_dto import (
     ToolInvocationDTO,
     TurnDTO,
 )
+from nammakam_api.application.dto.report_dto import (
+    BaselineEvaluationSummary,
+    LanguageSummaryDTO,
+    ParityGapDTO,
+    ScenarioFailureDTO,
+)
+from nammakam_api.application.use_cases.run_baseline_suite import RunBaselineSuiteUseCase
 from nammakam_api.application.use_cases.run_scenario import EvaluateScenarioUseCase
 
 __all__ = [
+    "BaselineEvaluationSummary",
     "EpisodeResultDTO",
     "EvaluateScenarioUseCase",
+    "LanguageSummaryDTO",
+    "ParityGapDTO",
+    "RunBaselineSuiteUseCase",
+    "ScenarioFailureDTO",
     "ToolInvocationDTO",
     "TurnDTO",
 ]
