@@ -86,6 +86,9 @@ class Language(Enum):
             "te-in": cls.TELUGU,
             "hi-in": cls.HINDI,
             "en": cls.ENGLISH,
+            "english": cls.ENGLISH,
+            "telugu": cls.TELUGU,
+            "hindi": cls.HINDI,
         }
 
         if normalized in aliases:

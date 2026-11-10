@@ -1,6 +1,6 @@
 """Domain Entities Package.
 
-Exports domain entities and contracts.
+Exports domain entities, state containers, and agent contracts.
 """
 
 from nammakam_api.domain.entities.episode import (
@@ -13,6 +13,7 @@ from nammakam_api.domain.entities.episode import (
 )
 from nammakam_api.domain.entities.evidence_pack import EvidencePack
 from nammakam_api.domain.entities.judgment import Judgment
+from nammakam_api.domain.entities.mock_bank_agent import MockBankAgent
 from nammakam_api.domain.entities.scenario import Scenario
 from nammakam_api.domain.entities.tool_call import (
     MockAccount,
@@ -30,6 +31,7 @@ __all__ = [
     "EvidencePack",
     "Judgment",
     "MockAccount",
+    "MockBankAgent",
     "MockBankingTools",
     "PendingTransferRequest",
     "Scenario",
