@@ -219,6 +219,3 @@ make test
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE) for details.
-#   n a m m a k a m 
- 
- 
