@@ -1,9 +1,11 @@
-"""AI Infrastructure Package.
+"""AI Infrastructure Adapters."""
 
-Intended Responsibility:
-Adapters for Gemini Flash, Gemini Pro, and deferred AI clients.
+from nammakam_api.infrastructure.ai.gemini_judge_client import (
+    GeminiJudgeClient,
+    GeminiJudgeResponseSchema,
+)
 
-TODO:
-Export AI client adapter implementations.
-"""
-
+__all__ = [
+    "GeminiJudgeClient",
+    "GeminiJudgeResponseSchema",
+]

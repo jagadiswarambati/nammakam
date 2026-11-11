@@ -1,9 +1,5 @@
-"""Configuration Package.
+"""Infrastructure Configuration."""
 
-Intended Responsibility:
-Application configuration loaders and environment variable mappings.
+from nammakam_api.infrastructure.config.settings import Settings, settings
 
-TODO:
-Export settings instance.
-"""
-
+__all__ = ["Settings", "settings"]

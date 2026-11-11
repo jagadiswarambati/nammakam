@@ -6,6 +6,7 @@ Transfers episode execution data between application use cases and external adap
 from dataclasses import dataclass, field
 from typing import Any
 
+from nammakam_api.application.ports.judge_port import JudgeResponseDTO
 from nammakam_api.domain.entities.episode import Episode, TerminalDisposition
 from nammakam_api.domain.entities.judgment import Judgment
 from nammakam_api.domain.entities.tool_call import ToolCall
@@ -82,3 +83,4 @@ class EpisodeResultDTO:
     reasoning: str
     episode: Episode
     judgment: Judgment
+    judge_response: JudgeResponseDTO | None = None
