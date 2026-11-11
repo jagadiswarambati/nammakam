@@ -56,3 +56,4 @@ export default function EvidencePackPage() {
 
   return <EvidencePackView evidencePack={data} />;
 }
+

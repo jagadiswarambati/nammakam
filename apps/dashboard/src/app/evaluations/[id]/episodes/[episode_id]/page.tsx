@@ -57,3 +57,4 @@ export default function EpisodeDetailPage() {
 
   return <EpisodeView episode={data} evaluationId={evaluationId} />;
 }
+
