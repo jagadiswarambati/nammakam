@@ -6,11 +6,12 @@ request tracing and CORS middleware, and initializes logging.
 
 import logging
 import time
+from typing import Any
 from uuid import uuid4
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from nammakam_api.presentation.routes.evaluations import router as evaluations_router
 from nammakam_api.presentation.routes.health import router as health_router
@@ -23,30 +24,50 @@ logging.basicConfig(
 logger = logging.getLogger("nammakam.api")
 
 
-class RequestIdMiddleware(BaseHTTPMiddleware):
-    """Middleware attaching a unique X-Request-ID header to every request/response."""
+class RequestIdMiddleware:
+    """Pure ASGI middleware attaching a unique X-Request-ID header to every request/response."""
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
-        request_id = request.headers.get("x-request-id") or str(uuid4())
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        request_id: str | None = None
+        for name, value in scope.get("headers", []):
+            if name.lower() == b"x-request-id":
+                request_id = value.decode("latin1")
+                break
+
+        if not request_id:
+            request_id = str(uuid4())
+
         start_time = time.perf_counter()
+        status_code = 200
 
-        response = await call_next(request)
+        async def send_wrapper(message: Message) -> None:
+            nonlocal status_code
+            if message["type"] == "http.response.start":
+                status_code = message.get("status", 200)
+                headers: list[tuple[bytes, bytes]] = list(message.get("headers", []))
+                headers.append((b"x-request-id", request_id.encode("latin1")))  # type: ignore[union-attr]
+                message["headers"] = headers
+            await send(message)
 
-        duration_ms = (time.perf_counter() - start_time) * 1000.0
-        response.headers["x-request-id"] = request_id
-
-        # Safe request logging: logs path, status, and duration (no request bodies or PII)
-        logger.info(
-            "%s %s -> %d (%.1f ms) [request_id=%s]",
-            request.method,
-            request.url.path,
-            response.status_code,
-            duration_ms,
-            request_id,
-        )
-        return response
+        try:
+            await self.app(scope, receive, send_wrapper)
+        finally:
+            duration_ms = (time.perf_counter() - start_time) * 1000.0
+            logger.info(
+                "%s %s -> %d (%.1f ms) [request_id=%s]",
+                scope.get("method"),
+                scope.get("path"),
+                status_code,
+                duration_ms,
+                request_id,
+            )
 
 
 def create_app() -> FastAPI:
