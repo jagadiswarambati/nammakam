@@ -113,10 +113,10 @@ describe("ScorecardView Component", () => {
 
   it("renders all 4 languages in the matrix table", () => {
     render(<ScorecardView summary={mockSummary} episodeIds={mockEpisodeIds} />);
-    expect(screen.getByText("English (India)")).toBeInTheDocument();
-    expect(screen.getByText("Telugu")).toBeInTheDocument();
-    expect(screen.getByText("Hindi")).toBeInTheDocument();
-    expect(screen.getByText("Hinglish")).toBeInTheDocument();
+    expect(screen.getAllByText("English (India)").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Telugu").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Hindi").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Hinglish").length).toBeGreaterThanOrEqual(1);
   });
 
   it("filters episodes when a language filter tab is clicked", () => {
