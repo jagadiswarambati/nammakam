@@ -1,9 +1,9 @@
-"""API Routes Package.
+"""Presentation Routes."""
 
-Intended Responsibility:
-FastAPI router definitions grouped by domain resource.
+from nammakam_api.presentation.routes.evaluations import router as evaluations_router
+from nammakam_api.presentation.routes.health import router as health_router
 
-TODO:
-Aggregate routers for health, episodes, and reports.
-"""
-
+__all__ = [
+    "evaluations_router",
+    "health_router",
+]

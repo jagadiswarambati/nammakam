@@ -1,9 +1,11 @@
-"""Persistence Infrastructure Package.
+"""Persistence Infrastructure Adapters."""
 
-Intended Responsibility:
-Data storage and retrieval implementations for episodes, metrics, and artifacts.
+from nammakam_api.infrastructure.persistence.in_memory_evaluation_repository import (
+    EvaluationRecord,
+    InMemoryEvaluationRepository,
+)
 
-TODO:
-Export persistence repository implementations.
-"""
-
+__all__ = [
+    "EvaluationRecord",
+    "InMemoryEvaluationRepository",
+]
