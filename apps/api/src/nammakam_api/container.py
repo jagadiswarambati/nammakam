@@ -6,6 +6,9 @@ and runtime settings to FastAPI route handlers.
 
 from functools import lru_cache
 
+from nammakam_api.application.use_cases.generate_evidence_pack import (
+    GenerateEvidencePackUseCase,
+)
 from nammakam_api.application.use_cases.run_baseline_suite import RunBaselineSuiteUseCase
 from nammakam_api.application.use_cases.run_scenario import EvaluateScenarioUseCase
 from nammakam_api.infrastructure.config.settings import Settings, settings
@@ -40,3 +43,8 @@ def get_run_baseline_suite_use_case() -> RunBaselineSuiteUseCase:
     """Factory creating a RunBaselineSuiteUseCase instance."""
     evaluate_use_case = get_evaluate_scenario_use_case()
     return RunBaselineSuiteUseCase(evaluate_scenario_use_case=evaluate_use_case)
+
+
+def get_generate_evidence_pack_use_case() -> GenerateEvidencePackUseCase:
+    """Factory creating a GenerateEvidencePackUseCase instance."""
+    return GenerateEvidencePackUseCase()

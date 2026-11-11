@@ -180,4 +180,5 @@ class EvidencePackResponse(BaseModel):
     signed: bool = False
     signature_algorithm: str = "NONE"
     verification_notes: str
+    manifest: dict[str, Any] | None = None
 

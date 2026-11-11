@@ -12,9 +12,13 @@ from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from nammakam_api.application.use_cases.generate_evidence_pack import (
+    GenerateEvidencePackUseCase,
+)
 from nammakam_api.application.use_cases.run_baseline_suite import RunBaselineSuiteUseCase
 from nammakam_api.container import (
     get_evaluation_repository,
+    get_generate_evidence_pack_use_case,
     get_run_baseline_suite_use_case,
 )
 from nammakam_api.infrastructure.persistence.in_memory_evaluation_repository import (
@@ -274,6 +278,9 @@ def get_episode_detail(
 def get_evidence_pack(
     evaluation_id: str,
     repository: InMemoryEvaluationRepository = Depends(get_evaluation_repository),
+    evidence_pack_use_case: GenerateEvidencePackUseCase = Depends(
+        get_generate_evidence_pack_use_case
+    ),
 ) -> EvidencePackResponse:
     """Returns SHA-256 evidence-pack digest and cryptographic signature verification status."""
     record = repository.get(evaluation_id)
@@ -283,25 +290,23 @@ def get_evidence_pack(
             detail=f"Evaluation '{evaluation_id}' not found",
         )
 
-    # Compute deterministic SHA-256 digest over episode IDs and verdicts
-    canonical_items = [
-        {"episode_id": ep_id, "verdict": ep.verdict.value, "is_safe": ep.is_safe}
-        for ep_id, ep in sorted(record.episodes.items())
-    ]
-    digest = hashlib.sha256(
-        json.dumps(canonical_items, sort_keys=True).encode("utf-8")
-    ).hexdigest()
+    manifest = evidence_pack_use_case.execute(
+        summary=record.summary,
+        episodes=record.episodes,
+        evaluation_id=evaluation_id,
+    )
 
     return EvidencePackResponse(
         evaluation_id=evaluation_id,
         status="ready",
-        evidence_pack_id=f"PACK-{evaluation_id}",
-        total_episodes=len(record.episodes),
-        digest_sha256=digest,
+        evidence_pack_id=manifest.evidence_pack_id,
+        total_episodes=manifest.total_episodes,
+        digest_sha256=manifest.manifest_digest_sha256,
         signed=False,
         signature_algorithm="NONE",
         verification_notes=(
-            "Cryptographic SHA-256 digest computed across evaluation episodes. "
-            "Cloud KMS asymmetric hardware signing is planned for production."
+            "Evidence pack designed to support internal review and audit workflows. "
+            "Asymmetric hardware signing via Cloud KMS is planned for production deployment."
         ),
+        manifest=manifest.to_dict(),
     )
