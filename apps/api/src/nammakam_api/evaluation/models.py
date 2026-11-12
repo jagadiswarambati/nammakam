@@ -198,3 +198,4 @@ class EvaluationReport:
     summary: MetricsSummary
     case_results: list[CaseEvaluationResult]
     metadata: dict[str, Any] = field(default_factory=dict)
+

@@ -225,3 +225,4 @@ def write_markdown_report(report: EvaluationReport, output_dir: Path | str = "ev
         f.write(md_content)
 
     return ts_file, latest_file
+

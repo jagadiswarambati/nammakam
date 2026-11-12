@@ -71,3 +71,4 @@ def filter_cases(
     if severity:
         filtered = [c for c in filtered if c.severity.upper() == severity.upper()]
     return filtered
+

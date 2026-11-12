@@ -76,3 +76,4 @@ def calculate_calibration(
         high_confidence_error_count=len(high_confidence_error_cases),
         high_confidence_error_cases=high_confidence_error_cases,
     )
+
