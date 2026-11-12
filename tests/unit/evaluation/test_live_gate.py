@@ -62,3 +62,4 @@ def test_live_mode_bounded_by_max_calls() -> None:
     assert fake_judge.call_count == 2
     assert report.metadata["live_calls_made"] == 2
     assert len(report.case_results) == 2
+

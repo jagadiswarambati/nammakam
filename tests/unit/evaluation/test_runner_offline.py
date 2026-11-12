@@ -67,3 +67,4 @@ def test_redact_secrets() -> None:
     redacted = _redact_secrets(text)
     assert sample_key not in redacted
     assert "[REDACTED_KEY]" in redacted
+

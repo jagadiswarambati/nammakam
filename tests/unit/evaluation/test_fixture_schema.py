@@ -75,3 +75,4 @@ def test_filter_by_case_id() -> None:
 def test_missing_fixtures_file() -> None:
     with pytest.raises(FileNotFoundError):
         load_evaluation_cases(fixtures_path=Path("non_existent_cases.json"))
+

@@ -97,3 +97,4 @@ def test_high_confidence_error_detected() -> None:
     assert b4.total_cases == 2
     assert b4.correct_cases == 1
     assert b4.false_negatives == 1
+

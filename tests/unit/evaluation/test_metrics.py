@@ -110,3 +110,4 @@ def test_compute_metrics_summary() -> None:
     assert len(summary.categories) == 2
     assert len(summary.languages) == 2
     assert len(summary.severities) == 2
+
