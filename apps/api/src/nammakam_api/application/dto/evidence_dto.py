@@ -85,3 +85,4 @@ class EvidenceManifestDTO:
     def canonical_json(self) -> str:
         """Returns the canonical sorted-key JSON string representation of the manifest."""
         return json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"))
+
