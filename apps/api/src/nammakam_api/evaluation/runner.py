@@ -39,7 +39,7 @@ def _redact_secrets(text: str) -> str:
     if api_key and len(api_key) > 5 and api_key in text:
         text = text.replace(api_key, "[REDACTED_API_KEY]")
     # Redact AIza... Google API keys
-    text = re.sub(r"AIza[0-9A-Za-z_-]{35}", "[REDACTED_KEY]", text)
+    text = re.sub(r"AIza[0-9A-Za-z_-]{25,45}", "[REDACTED_KEY]", text)
     return text
 
 

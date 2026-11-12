@@ -51,3 +51,7 @@ credentials.json
 .DS_Store
 Thumbs.db
 
+# Evaluation reports
+evaluation/reports/evaluation_report_*_*.json
+evaluation/reports/evaluation_report_*_*.md
+
